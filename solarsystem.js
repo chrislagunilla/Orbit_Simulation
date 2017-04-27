@@ -213,7 +213,17 @@ var subtitle = canvas.display.text({
   y: 160,
   origin: { x: "left", y: "top" },
   font: "15px sans-serif",
-  text: "*not to scale\n\n[start positions based off planets'\npositions at 9:23PM, 4/26/2017]",
+  text: "*not to scale" +
+  "\n\n[start positions based off planets'\npositions at 9:23PM, 4/26/2017]" +
+  "\n\n[orbital velocities are accurate,\nrelative to the orbital\nvelocity of the Earth.]",
+  fill: "#FFF"
+}).add();
+var control = canvas.display.text({
+  x: 50,
+  y: canvas.height-100,
+  origin: { x: "left", y: "top" },
+  font: "20px sans-serif",
+  text: "Press [SPACE] to start/stop animation.",
   fill: "#FFF"
 }).add();
 // ================================================================
@@ -391,20 +401,33 @@ var rev_tracker = canvas.display.text({
   y: 100,
   origin:{x: "right", y: "top"},
   font: "20px sans-serif",
-  text: "# of Revolutions:\nMercury: " + revs[0] + "\nVenus: " + revs[1] + "\nEarth: " + revs[2] + "\nMars: " + revs[3] + "\nJupiter: " + revs[4],
+  text: "# of Revolutions:\nMercury: " + revs[0] + "\nVenus: "
+  + revs[1] + "\nEarth: " + revs[2] + "\nMars: " + revs[3] + "\nJupiter: "
+  + revs[4] + "\nSaturn: " + revs[5] + "\nUranus: " + revs[6]
+  + "\nNeptune: " + revs[7],
   fill: "#FFF"
 }).add();
 // ================================================================
 
-// Set rotation loop
-canvas.setLoop(function(){
-  for(var i = 0; i < planets.length; i++){
-    planets[i].rotation += planets[i].speed;
-    if(planets[i].rotation - 360 * (revs[i]+1) >= planets[i].start){
-      revs[i] += 1;
+// Add Start/Stop Controls via the Space Bar
+var isPaused = true;
+canvas.bind("keydown", function () {
+	if(canvas.keyboard.getKeysDown()[0] = 32 && isPaused){
+    canvas.setLoop(function(){
+      for(var i = 0; i < planets.length; i++){
+        planets[i].rotation += planets[i].speed;
+        if(planets[i].rotation - 360 * (revs[i]+1) >= planets[i].start){
+          revs[i] += 1;
+      }
+      rev_tracker.text = "# of Revolutions:\nMercury: " + revs[0] + "\nVenus: "
+      + revs[1] + "\nEarth: " + revs[2] + "\nMars: " + revs[3] + "\nJupiter: "
+      + revs[4] + "\nSaturn: " + revs[5] + "\nUranus: " + revs[6]
+      + "\nNeptune: " + revs[7];
+    }}).start();
+    isPaused = false;
   }
-  rev_tracker.text = "# of Revolutions:\nMercury: " + revs[0] + "\nVenus: "
-  + revs[1] + "\nEarth: " + revs[2] + "\nMars: " + revs[3] + "\nJupiter: "
-  + revs[4] + "\nSaturn: " + revs[5] + "\nUranus: " + revs[6]
-  + "\nNeptune: " + revs[7];
-}}).start();
+  else if(canvas.keyboard.getKeysDown()[0] = 32 && !isPaused){
+    canvas.timeline.stop()
+    isPaused = true;
+  }
+});
