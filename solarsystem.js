@@ -1,3 +1,6 @@
+// Christopher Lagunilla
+// CJL71@pitt.edu
+
 var au_scale = 110;
 var diameter_scale = 3;
 
