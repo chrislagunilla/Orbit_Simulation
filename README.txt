@@ -3,4 +3,4 @@ By Chris Lagunilla
 https://chrislagunilla.github.io/astronomy-project/
 
 This project utilizes the oCanvas Framework
-Link: [ocanvas](ocanvas.org)
+Link: [ocanvas](http://ocanvas.org)
